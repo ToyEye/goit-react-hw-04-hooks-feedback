@@ -1,102 +1,67 @@
-import React, { Component } from "react";
-import "./App.css";
-import Container from "./components/Container"
-import Statistics from "./components/Statistic/";
+import { useState } from 'react';
+import './App.css';
+import Container from './components/Container';
+import Statistics from './components/Statistic/';
 import Section from './components/Section/';
 import FeedbackOptions from './components/FeedbackOptions';
 import Notification from './components/NotificationMessage';
-import PropTypes from "prop-types";
 
-class Feeedback extends Component{
-  static propTypes = {
-    state: PropTypes.objectOf(PropTypes.shape({
-      good: PropTypes.number.isRequired,
-      neutral: PropTypes.number.isRequired,
-      bad: PropTypes.number.isRequired,
-    })),
-    onButtonGoodPush: PropTypes.func,
-    onButtonNeutralPush: PropTypes.func,
-    onButtonBadPush: PropTypes.func,
-    countTotalFeedback: PropTypes.func,
-    countPositiveFeedbackPercentage: PropTypes.func,
-  }
+export default function Feeedback() {
+  const [good, setGood] = useState(0);
+  const [bad, setBad] = useState(0);
+  const [neutral, setNeutral] = useState(0);
 
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0
-  }
-  
-  onButtonGoodPush = () => {
-    this.setState(prevState => {
-      return {good: prevState.good + 1};
-    })
-  }
+  const onButtonStatisticPush = event => {
+    const name = event.target.name;
+    switch (name) {
+      case 'good':
+        setGood(prevState => prevState + 1);
+        break;
+      case 'bad':
+        setBad(prevState => prevState + 1);
+        break;
+      case 'neutral':
+        setNeutral(prevState => prevState + 1);
+        break;
 
-  onButtonNeutralPush = () => {
-    this.setState(prevState => {
-      return {neutral: prevState.neutral + 1};
-    })
-  }
+      default:
+        return;
+    }
+  };
 
-  onButtonBadPush = () => {
-    this.setState(prevState => {
-      return {bad: prevState.bad + 1};
-    })
-  }
+  const countTotalFeedback = () => {
+    return good + neutral + bad;
+  };
 
-  countTotalFeedback = () => {
-    const { good, neutral, bad } = this.state;
-    let total = 0;
-     total = good + neutral +bad;
-    return total;
-  }
-
-  countPositiveFeedbackPercentage = () => {
-    const { good } = this.state;
-    const totalCount = this.countTotalFeedback()
-    const positiveCount = good * 100 / totalCount ;
+  const countPositiveFeedbackPercentage = () => {
+    const totalCount = countTotalFeedback();
+    const positiveCount = (good * 100) / totalCount;
     return positiveCount.toFixed(2);
-  }
+  };
 
-  render() {
-    const { good, neutral, bad } = this.state;
-    return (
-      
-        <Container>
-        <Section title="Pleas leave feedback" >
-          <FeedbackOptions 
-          options={this.onButtonGoodPush} 
-          onLeaveFeedback="Good" 
-            name="good" />
-          
-          <FeedbackOptions 
-          options={this.onButtonNeutralPush} 
-          onLeaveFeedback="Neutral" 
-            name="neutral" />
-          
-          <FeedbackOptions 
-          options={this.onButtonBadPush} 
-          onLeaveFeedback="Bad" 
-          name="bad"/>
-        </Section>
+  return (
+    <Container>
+      <Section title="Pleas leave feedback">
+        <FeedbackOptions options={onButtonStatisticPush} onLeaveFeedback="Good" name="good" />
 
-        <Section title="Statistic" >
-          {this.countTotalFeedback() < 1 ? <Notification message="There is no feedback" /> :
-            <Statistics
+        <FeedbackOptions options={onButtonStatisticPush} onLeaveFeedback="Neutral" name="neutral" />
+
+        <FeedbackOptions options={onButtonStatisticPush} onLeaveFeedback="Bad" name="bad" />
+      </Section>
+
+      <Section title="Statistic">
+        {countTotalFeedback() < 1 ? (
+          <Notification message="There is no feedback" />
+        ) : (
+          <Statistics
             good={good}
             neutral={neutral}
             bad={bad}
-            total={this.countTotalFeedback()}
-            positivePercentage={this.countPositiveFeedbackPercentage()} />}
-
-          
-          
-          </Section>
-          </Container>
-     
-    );
-  }
+            total={countTotalFeedback()}
+            positivePercentage={countPositiveFeedbackPercentage()}
+          />
+        )}
+      </Section>
+    </Container>
+  );
 }
-
-export default Feeedback;
