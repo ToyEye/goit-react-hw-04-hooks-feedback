@@ -1,0 +1,24 @@
+.statistics {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.feedback {
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.badStatistics {
+  composes: feedback;
+  color: red;
+}
+
+.middleStatistics {
+  composes: feedback;
+  color: orange;
+}
+
+.goodStatistics {
+  composes: feedback;
+  color: green;
+}
