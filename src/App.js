@@ -6,6 +6,8 @@ import Section from './components/Section/';
 import FeedbackOptions from './components/FeedbackOptions';
 import Notification from './components/NotificationMessage';
 
+const feedBackButtons = [{ name: 'Good' }, { name: 'Bad' }, { name: 'Neutral' }];
+
 export default function Feeedback() {
   const [good, setGood] = useState(0);
   const [bad, setBad] = useState(0);
@@ -14,13 +16,13 @@ export default function Feeedback() {
   const onButtonStatisticPush = event => {
     const name = event.target.name;
     switch (name) {
-      case 'good':
+      case 'Good':
         setGood(prevState => prevState + 1);
         break;
-      case 'bad':
+      case 'Bad':
         setBad(prevState => prevState + 1);
         break;
-      case 'neutral':
+      case 'Neutral':
         setNeutral(prevState => prevState + 1);
         break;
 
@@ -42,11 +44,14 @@ export default function Feeedback() {
   return (
     <Container>
       <Section title="Pleas leave feedback">
-        <FeedbackOptions options={onButtonStatisticPush} onLeaveFeedback="Good" name="good" />
-
-        <FeedbackOptions options={onButtonStatisticPush} onLeaveFeedback="Neutral" name="neutral" />
-
-        <FeedbackOptions options={onButtonStatisticPush} onLeaveFeedback="Bad" name="bad" />
+        {feedBackButtons.map(({ name }) => (
+          <FeedbackOptions
+            key={name}
+            options={onButtonStatisticPush}
+            onLeaveFeedback={name}
+            name={name}
+          />
+        ))}
       </Section>
 
       <Section title="Statistic">
