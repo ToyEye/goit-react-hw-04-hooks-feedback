@@ -1,17 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import s from './FeedbackOptions.module.css';
+import { MouseEvent } from 'react';
 
-const FeedbackOptions = ({ onLeaveFeedback, options }) =>
+type Props = {
+  onLeaveFeedback: (event: MouseEvent<HTMLButtonElement>) => void;
+  options: string[];
+};
+
+const FeedbackOptions = ({ onLeaveFeedback, options }: Props) =>
   options.map(option => (
     <button key={option} type="button" className={s.button} onClick={onLeaveFeedback} name={option}>
       {option}
     </button>
   ));
-
-FeedbackOptions.prototype = {
-  onLeaveFeedback: PropTypes.func.isRequired,
-  options: PropTypes.array.isRequired,
-};
 
 export default FeedbackOptions;

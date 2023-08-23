@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, MouseEvent } from 'react';
 import './App.css';
 import Container from './components/Container';
-import Statistics from './components/Statistic/';
-import Section from './components/Section/';
+import Statistics from './components/Statistic';
+import Section from './components/Section';
 import FeedbackOptions from './components/FeedbackOptions';
 import Notification from './components/NotificationMessage';
 
@@ -11,8 +11,8 @@ export default function Feeedback() {
   const [bad, setBad] = useState(0);
   const [neutral, setNeutral] = useState(0);
 
-  const onButtonStatisticPush = event => {
-    const name = event.target.name;
+  const onButtonStatisticPush = (event: MouseEvent<HTMLButtonElement>) => {
+    const { name } = event.currentTarget;
     switch (name) {
       case 'Good':
         setGood(prevState => prevState + 1);
@@ -36,7 +36,7 @@ export default function Feeedback() {
   const countPositiveFeedbackPercentage = () => {
     const totalCount = countTotalFeedback();
     const positiveCount = (good * 100) / totalCount;
-    return positiveCount.toFixed(2);
+    return Number(positiveCount.toFixed(2));
   };
 
   return (
