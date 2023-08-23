@@ -6,11 +6,22 @@ type Props = {
   options: string[];
 };
 
-const FeedbackOptions = ({ onLeaveFeedback, options }: Props) =>
-  options.map(option => (
-    <button key={option} type="button" className={s.button} onClick={onLeaveFeedback} name={option}>
-      {option}
-    </button>
-  ));
+const FeedbackOptions = ({ onLeaveFeedback, options }: Props) => {
+  return (
+    <>
+      {options.map(option => (
+        <button
+          key={option}
+          type="button"
+          className={s.button}
+          onClick={onLeaveFeedback}
+          name={option}
+        >
+          {option}
+        </button>
+      ))}
+    </>
+  );
+};
 
 export default FeedbackOptions;
